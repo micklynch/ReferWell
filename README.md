@@ -84,3 +84,10 @@ Listed below are the steps that our framework should take in order to create the
 
 ## Plan
 In the first Sprint of this course, I will be outlining the detailed requirements and solution design. Will be leveraging resources that currently exist as much as possible (e.g https://hapi.fhir.org for test data). 
+
+# Implementation
+To run the code, the user must
+1. Create a virtual environment. For example, using `python3 -m venv venv`. Activate the environment using `source venv/bin/activate`.
+2. Install the dependencies using `pip install -r requirements.txt`.
+3. Make a copy of the `.env.example` file and call it `.env`. Open the file and add your `OPENAI_API_KEY` into the file.
+4. Run the code `python main.py`.
