@@ -3,3 +3,5 @@ langchain-openai
 langgraph
 openai
 python-dotenv
+requests
+streamlit
