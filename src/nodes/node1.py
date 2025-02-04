@@ -1,5 +1,5 @@
 from langchain_openai import ChatOpenAI
-from src.state.graph_state import GraphState
+from state.graph_state import GraphState
 from langchain_core.messages import SystemMessage
 
 research_tool=None
