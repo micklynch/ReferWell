@@ -73,6 +73,6 @@ if st.button("📝 Generate Referral Letter"):
 
         # Display Referral Letter
         st.markdown("<h3 class='big-title'>📝 Referral Letter</h3>", unsafe_allow_html=True)
-        st.write(f"{result.get('clinical_data', 'No data available')}</div>")
+        st.write(f"{result.get('referral_letter', 'No data available')}</div>")
     else:
         st.warning("Please enter a valid Patient ID.")
