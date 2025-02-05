@@ -1,5 +1,8 @@
 import streamlit as st
 from graphs.my_graph import create_graph
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Set full-width clean UI
 st.set_page_config(page_title="ReferWell - Generate Referral Letter", page_icon="📄", layout="centered")
