@@ -62,14 +62,29 @@ st.markdown("<h1 class='app-name'>Refer<span>Well</span></h1>", unsafe_allow_htm
 # Page Title
 st.markdown("<h1 class='big-title'>📄 Generate Referral Letter</h1>", unsafe_allow_html=True)
 
-# Input field for Patient ID
+# Input fields
 patient_id = st.text_input("🔹 Enter Patient ID", "")
+specialist = st.text_input("🔹 Specialist", "")
+reason = st.text_area("🔹 Reason for Referral", "", height=100)
+fake_referring_doctor = """
+Dr. Anya Sharma, MD, 
+Puget Sound Internal Medicine & Primary Care, 
+1200 Madison Street, Suite 100, 
+Seattle, WA 98104, 
+Phone: (206) 555-2345, 
+Fax: (206) 555-6789
+"""
 
 # Generate Referral Letter button
 if st.button("📝 Generate Referral Letter"):
-    if patient_id.strip():
+    if patient_id.strip() and specialist.strip() and reason.strip():
         with st.spinner("Generating referral letter..."):
-            inputs = {"patient_id": patient_id}
+            inputs = {
+                "patient_id": patient_id,
+                "specialist": specialist,
+                "reason": reason,
+                "referrer_details": fake_referring_doctor 
+            }
             graph = create_graph()
             thread = {"configurable": {"thread_id": 101}}
             result = graph.invoke(inputs, config=thread)
@@ -78,4 +93,4 @@ if st.button("📝 Generate Referral Letter"):
         st.markdown("<h3 class='big-title'>📝 Referral Letter</h3>", unsafe_allow_html=True)
         st.write(f"{result.get('referral_letter', 'No data available')}</div>")
     else:
-        st.warning("Please enter a valid Patient ID.")
+        st.warning("Please fill in all fields.")
