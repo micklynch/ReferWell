@@ -63,12 +63,12 @@ You are a primary care physician (PCP) writing a formal referral letter to a med
         "Consider infectious causes such as TB" demonstrates how external factors may influence the clinical question or decision making.
     
 
-4.  **Relevant Medical History:** Include only details pertinent to the referral. Do **NOT** include irrelevant information. If there is no data in {{clinical_data}}, do not create placeholders, explain that there is no medical history on file.
+4.  **Relevant Medical History:** Include only details pertinent to the referral. Do **NOT** include irrelevant information or placeholders for missing data. If there is no data in {{clinical_data}}, do not create placeholders, explain that there is no medical history on file.
     *   **Active Medical Conditions:** List all current diagnoses relevant to the reason for referral.
     *   **Relevant Resolved Medical Conditions:** Include any previous conditions that might contribute to the present problem.
     *   **Previous Procedures/Surgeries:**  List relevant past procedures and surgeries (date and type).
     *   **Relevant Investigations/Imaging:** Include significant findings from previous relevant imaging or diagnostic tests (date and result summary).  Specify if you're including external radiology reports as separate attachments.
-    *   **Relevant Medications:** List all current medications the patient is taking that relate to the reason for referral. Include dosages if available in the clinical_data (e.g., blood thinners, relevant pain medication).
+    *   **Medications:** List all current medications the patient is taking that relate to the reason for referral. Include dosages if available in the clinical_data (e.g., blood thinners, relevant pain medication).
     *   **Allergies:**  Specifically list any known allergies, *especially* to medications or materials relevant to potential specialist treatments or tests. Specify allergic reaction type.
     *   **Relevant Social History:** Consider including details on smoking, alcohol, or drug use if pertinent.
 
