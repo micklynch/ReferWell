@@ -29,10 +29,8 @@ You are a primary care physician (PCP) writing a formal referral letter to a med
     *   Medical Record Number
     *   Full Address and Postcode
     *   Contact Telephone Number(s)
-    *   Communication Preferences (if relevant) - preferred contact method (e.g., sign language, letter, phone) and preferred written communication format (e.g., large print, braille).
-    *   Relevant Contacts (e.g., Next of Kin, Emergency Contact; include name and relationship) - Omit if not relevant or unavailable.
-
-3.  **Reason for Referral (Chief Complaint):**  Clearly and concisely state the reason for the referral.  Be specific. Use medical terms, even if the reason is written in non-medical language. Examples:
+    
+3.  **Reason for Referral (Chief Complaint):**  Clearly and concisely state the reason for the referral to be {{reason}}.  Be specific. Use medical terms, even if the reason is written in non-medical language. Examples:
     Example 1: Knee Pain
     * Non-Medical Language: "Patient is experiencing persistent knee pain that's limiting their ability to walk and is not improving despite taking painkillers."
     * Reason for Referral (Chief Complaint): "Referral for evaluation and management of persistent right knee arthralgia and functional limitation despite conservative management with analgesics. Rule out degenerative joint disease requiring orthopedic intervention."
@@ -63,7 +61,7 @@ You are a primary care physician (PCP) writing a formal referral letter to a med
         "Consider infectious causes such as TB" demonstrates how external factors may influence the clinical question or decision making.
     
 
-4.  **Relevant Medical History:** Include only details pertinent to the referral. Do **NOT** include irrelevant information or placeholders for missing data. If there is no data in {{clinical_data}}, do not create placeholders.
+4.  **Relevant Medical History:** Include only details pertinent to the referral from the following FHIR objects: {{clinical_data}}. Do **NOT** include irrelevant information or placeholders for missing data. If there is no data or missing data fields in {{clinical_data}}, leave it blank and do not create placeholders.
     *   **Active Medical Conditions:** List all current diagnoses relevant to the reason for referral. If no data, remove this line.
     *   **Relevant Resolved Medical Conditions:** Include any previous conditions that might contribute to the present problem. If no data, remove this line.
     *   **Previous Procedures/Surgeries:**  List relevant past procedures and surgeries (date and type). If no data, remove this line.
@@ -72,33 +70,25 @@ You are a primary care physician (PCP) writing a formal referral letter to a med
     *   **Allergies:**  Specifically list any known allergies, *especially* to medications or materials relevant to potential specialist treatments or tests. Specify allergic reaction type. If no data, remove this line.
     *   **Relevant Social History:** Consider including details on smoking, alcohol, or drug use if pertinent.
 
-5.  **Relevant Exam Findings:**  Include only physical exam findings that are directly related to the reason for the referral.  Avoid mentioning normal findings.
-
-6.  **Your Expectations:** Briefly state what you hope the specialist will accomplish.  Examples:
+5.  **Your Expectations:** Briefly state what you hope the specialist will accomplish.  Examples:
     *   "I would be grateful for your assessment, diagnosis, and recommendations for management."
     *   "I am looking for your guidance on further diagnostic workup and treatment options."
     *   "I request your opinion on whether [Specific intervention, e.g., surgery] is appropriate for this patient."
 
-7. **Tone and Conciseness:** Remain professional and avoid unnecessary jargon. Be concise and to the point. Prioritize key information.
+6. **Tone and Conciseness:** Remain professional and avoid unnecessary jargon. Be concise and to the point. Prioritize key information.
 
-8. **Negative Constraints:**
+7. **Negative Constraints:**
     *   **Do not include introductory or concluding pleasantries not typically found in formal medical letters.** (e.g. "I hope this letter finds you well," or "It's a pleasure to refer this patient to you.")
     *   **Do not flatter the specialist or mention their expertise in a generic or insincere way.** Focus on the patient's needs.
-    *   **Do not invent information not present in the {{clinical_data}}.** If information is missing, note "[Information Missing]" or "[Unknown]" where appropriate.
+    *   **Do not invent information not present in the {{clinical_data}}.** If information is missing, leave it empty or do not mention it.
 
 **Example 1 (Simple):**
 
-**Input (clinical_data):**
-
-#### clinical_data
 Patient Name: John Smith, DOB: 1948-03-15, MRN: 1234567
 Reason for Referral: Persistent right knee pain despite conservative management.
 Relevant History: Osteoarthritis of the right knee for the last 5 years. Tried physical therapy and NSAIDs with limited relief.
 Medications: Tylenol 500mg PRN.
 Allergies: NKDA
-
-
-
 
 **Desired Output (Example Letter - The LLM is expected to build on this and use the full format defined above):**
 
@@ -121,9 +111,6 @@ Sincerely,
 
 **Example 2 (More Complex):**
 
-**Input (clinical_data):**
-
-#### clinical_data
 Patient Name: Jane Doe, DOB: 1972-08-22, MRN: 9876543
 Reason for Referral: Evaluate for possible autoimmune etiology of recent onset bilateral hand and wrist pain and swelling.
 Relevant History: Diagnosed with hypothyroidism 3 years ago, well-controlled on levothyroxine.  Recent onset (past 2 months) of bilateral MCP and wrist joint pain and swelling.  Reports morning stiffness lasting >1 hour.
@@ -156,8 +143,9 @@ Sincerely,
 
 
 
-**Now, generate the referral letter based on the following clinical data: {{clinical_data}} and reason: {{reason}}**
-        
+**Now, generate the referral letter based on the following clinical data: {{clinical_data}} and reason: {{reason}} from {{referrer_details}}**
+IMPORTANT INFORMATION: Do not leave any placeholders. 
+
 """)
 
     chain = (

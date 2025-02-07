@@ -11,12 +11,14 @@ def analyze_node(state):
             Generate a python program that can fetch patient data required to 
             generate a recommendation letter while referring him to a cardiologist
              using FHIR API with the given patient id {{patient_id}}. The code should 
-             pull data from a number of relevant FHIR resources that will be included
-             in a referral letter.
+             pull data from a number of relevant FHIR resources.
+            1. Firstly get the Patient resource using the {{patient_id}}.  
+            2. Then get the following resources for the patient {{patient_id}},for example, 
+            Observation, MedicationStatement, MedicationRequest, Condition, DiagnosticReport.
 
             If there are any missing reports or missing data for which a service order 
             can be created generate the required code to create the service orders.
-            Print the details of the service order that is created.The patient details should be stored
+            Print the details of the service order that is created.The patient data should be stored
             using the globals() function.
             Use the following FHIR Server URL in the code https://hapi.fhir.org/baseR4      
             The output should be Python code only, with no additional commentary or explanation.
