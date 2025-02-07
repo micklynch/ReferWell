@@ -82,7 +82,7 @@ if st.button("📝 Generate Referral Letter"):
         with st.spinner("Generating referral letter..."):
             inputs = {
                 "patient_id": patient_id,
-                "specialist": specialist,
+                "specialty_type": specialist,
                 "reason": reason,
                 "referrer_details": fake_referring_doctor 
             }
@@ -92,6 +92,6 @@ if st.button("📝 Generate Referral Letter"):
 
         # Display Referral Letter
         st.markdown("<h3 class='big-title'>📝 Referral Letter</h3>", unsafe_allow_html=True)
-        st.write(f"{result.get('referral_letter', 'No data available')}</div>")
+        st.write(f"{result.get('referral_letter', 'No data available')}")
     else:
         st.warning("Please fill in all fields.")

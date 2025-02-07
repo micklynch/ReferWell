@@ -5,3 +5,8 @@ openai
 python-dotenv
 requests
 streamlit
+geopy
+haversine
+pandas
+geopy
+haversine

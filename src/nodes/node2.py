@@ -12,8 +12,7 @@ def analyze_node(state):
             generate a recommendation letter while referring him to a cardiologist
              using FHIR API with the given patient id {{patient_id}}. The code should 
              pull data from a number of relevant FHIR resources that will be included
-             in a referral letter (for example, Observation, MedicationStatement, 
-             MedicationRequest).
+             in a referral letter.
 
             If there are any missing reports or missing data for which a service order 
             can be created generate the required code to create the service orders.

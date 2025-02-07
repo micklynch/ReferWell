@@ -9,7 +9,7 @@ def generate_node(state):
     prompt = ChatPromptTemplate.from_template(
         f"""
 
-You are a primary care physician (PCP) writing a formal referral letter to a medical specialist. Your goal is to provide the specialist with all the necessary information to understand the patient's medical history, current condition, and the reason for the referral. You will be provided with clinical data in the format of {{clinical_data}}.  Use this data to generate a concise and informative referral letter.
+You are a primary care physician (PCP) writing a formal referral letter to a medical specialist. Your goal is to provide the specialist with all the necessary information to understand the patient's medical history, current condition, and the reason for the referral. You will be provided with clinical data in the format of {{clinical_data}}. Specialist data {{specialist_data}} Use this data to generate a concise and informative referral letter.
 
 **Guidelines:**
 
@@ -167,7 +167,8 @@ Sincerely,
     referral_letter = chain.invoke({
         "clinical_data": state['clinical_data'], 
         "reason": state['reason'],
-        "referrer_details": state['referrer_details'] 
+        "referrer_details": state['referrer_details'] ,
+        "specialist_data": state['specialist_data']
         })
     print(referral_letter)
     return {"referral_letter":  referral_letter}

@@ -1,23 +1,66 @@
-from langchain_openai import ChatOpenAI
 from state.graph_state import GraphState
-from langchain_core.messages import SystemMessage
+import pandas as pd
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
+from utils.patient_demographics import get_patient_demographics
 
-research_tool=None
+
 def specialist_search(state: GraphState):
-    llm = ChatOpenAI(model="gpt-4o")
-    system_prompt = SystemMessage(
-        "Based on the provided doctor’s notes, perform a search to identify the "
-        "most suitable specialist and the corresponding template for generating a "
-        "recommendation letter")
+    csv_file = "specialists.csv"
+    df = pd.read_csv(csv_file)
 
-    tools = [research_tool]
+    patient_address = get_patient_demographics(state['patient_id'])['address']
+    required_specialty = state['specialty_type']
+    closest_specialist = find_nearest_specialist(df, patient_address, required_specialty)
 
-    llm_with_tools = llm.bind_tools(tools)
-
-    specialist_result = llm_with_tools.invoke([system_prompt]+state['messages'])
-    
     return {
-        "research_results": [specialist_result.content],
-        "messages": [specialist_result]
+        "specialist_data": closest_specialist
     }
 
+
+# Function to get latitude and longitude for an address
+def get_coordinates(address):
+    geolocator = Nominatim(user_agent="geo_search")
+    location = geolocator.geocode(address)
+    if location:
+        return location.latitude, location.longitude
+    return None
+
+
+# Function to filter specialists by specialty
+def filter_specialists_by_specialty(df, required_specialty):
+    """Filters the DataFrame based on the required specialty."""
+    return df[df["Specialty"].str.lower() == required_specialty.lower()]
+
+
+# Function to find the nearest specialist
+def find_nearest_specialist(df, patient_address, required_specialty):
+    """
+    Finds the nearest specialist to the patient based on address and specialty.
+    Returns the closest specialist's details.
+    """
+    patient_coords = get_coordinates(patient_address)
+    if not patient_coords:
+        raise ValueError("Invalid patient address, unable to fetch coordinates.")
+
+    # Filter specialists based on the required specialty
+    filtered_df = filter_specialists_by_specialty(df, required_specialty)
+
+    # Compute distance for each specialist
+    specialists_with_distance = []
+    for _, row in filtered_df.iterrows():
+        doctor_address = row["Address"]
+        doctor_coords = get_coordinates(doctor_address)
+
+        if doctor_coords:
+            distance = geodesic(patient_coords, doctor_coords).miles
+            specialists_with_distance.append({
+                "Doctor Name": row["Doctor Name"],
+                "Specialty": row["Specialty"],
+                "Address": doctor_address,
+                "Distance": distance
+            })
+
+    specialists_with_distance.sort(key=lambda x: x["Distance"])
+
+    return specialists_with_distance[0] if specialists_with_distance else None
