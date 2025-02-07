@@ -64,7 +64,8 @@ st.markdown("<h1 class='big-title'>📄 Generate Referral Letter</h1>", unsafe_a
 
 # Input fields
 patient_id = st.text_input("🔹 Enter Patient ID", "")
-specialist = st.text_input("🔹 Specialist", "")
+# specialist = st.text_input("🔹 Specialist", "")
+specialist = st.selectbox("Specialist Type", ("Cardiologist", "Orthopedic Surgeon", "Neurologist", "Dermatologist"),placeholder="Choose an option", disabled=False, index=None, label_visibility="visible")
 reason = st.text_area("🔹 Reason for Referral", "", height=100)
 fake_referring_doctor = """
 Dr. Anya Sharma, MD, 
