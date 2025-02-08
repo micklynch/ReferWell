@@ -3,6 +3,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.utilities import RequestsWrapper
 import json
+from utils.console_config import pretty_print_python_code_in_panel, pretty_print_json, print_section_header, print_ruler
 
 
 FHIR_BASE_URL = "https://hapi.fhir.org/baseR4"
@@ -91,7 +92,9 @@ def collect_clinical_data(state):
         "specialty_type": state["specialty_type"]
     })
     code_to_execute = check_formatting(generated_code)
-    
+    print_section_header("GENERATED CODE", "green")
+    pretty_print_python_code_in_panel(code_to_execute)
+    print_ruler()
     # Create namespace with required functions and variables
     global_namespace = {
         'get_fhir_resources': get_fhir_resources,
@@ -99,11 +102,16 @@ def collect_clinical_data(state):
         'patient_id': state["patient_id"],
         'specialty_type': state["specialty_type"]
     }
-    
+    print_section_header("Code Outputs", "yellow")
     exec(code_to_execute, global_namespace)
-    
+    print_ruler()
+
     clinical_data = global_namespace.get("clinical_data", {})
-    print(clinical_data)
+    print_section_header("CLINICAL DATA", "blue")
+    print_ruler()
+    pretty_print_json(clinical_data)
+    print_ruler()
+
     return {"clinical_data": clinical_data}
 
 def check_formatting(code):

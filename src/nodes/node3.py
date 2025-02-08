@@ -1,7 +1,7 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
-import json
+from utils.console_config import pretty_print_text, print_ruler, print_section_header
 
 
 def generate_node(state):
@@ -151,13 +151,15 @@ IMPORTANT INFORMATION: Do not leave any placeholders.
     chain = (
             prompt | model | StrOutputParser()
     )
-    print('node 3 data: ' ,state['clinical_data'])
     referral_letter = chain.invoke({
         "clinical_data": state['clinical_data'], 
         "reason": state['reason'],
         "referrer_details": state['referrer_details'] ,
         "specialist_data": state['specialist_data']
         })
-    print(referral_letter)
+    print_ruler()
+    print_section_header("GENERATED LETTER", "yellow")
+    print_ruler()
+    pretty_print_text(referral_letter, panel=True)
     return {"referral_letter":  referral_letter}
 
