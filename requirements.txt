@@ -10,3 +10,4 @@ haversine
 pandas
 geopy
 haversine
+langchain_community
