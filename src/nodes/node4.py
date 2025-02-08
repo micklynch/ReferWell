@@ -115,7 +115,6 @@ def collect_clinical_data(state):
     return {"clinical_data": clinical_data}
 
 def check_formatting(code):
-    print (code)
     if "```" in code:
         lines = code.split('\n')
         executable_lines = [line for line in lines if not line.strip().startswith('```')]
