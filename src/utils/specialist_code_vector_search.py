@@ -17,7 +17,7 @@ def find_specialist(reason: str, result_size: int=3) -> List[str]:
     limit=result_size,
     ))
     pretty_print_json(specialists_type)
-    codes = codes = [item['Code'] for item in specialists_type]
+    codes = [item['Code'] for item in specialists_type]
     return codes
 
 find_specialist("broken hip that needs replacement", 3)
