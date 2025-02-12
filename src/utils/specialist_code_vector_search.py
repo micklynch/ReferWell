@@ -11,7 +11,11 @@ collection = db.get_collection("specialists_taxonomy")
 print_ruler()
 print_section_header(f"Specialist Type from {db.list_collection_names()}", "green")
 
-def find_specialist(reason: str, result_size: int=3) -> List[str]: 
+def find_specialist_type(reason: str, result_size: int=3) -> List[str]:
+    """
+    Finds the most appropriate specialists codes based on reasons
+    Example Output: ['2080P0202X', '2080P0205X', '207RC0000X']
+    """
     specialists_type = list(collection.find(
     sort={"$vectorize": reason},
     limit=result_size,
@@ -19,7 +23,3 @@ def find_specialist(reason: str, result_size: int=3) -> List[str]:
     pretty_print_json(specialists_type)
     codes = [item['Code'] for item in specialists_type]
     return codes
-
-# dunder name check
-if __name__ == "__main__":
-    find_specialist("broken hip that needs replacement", 3)
