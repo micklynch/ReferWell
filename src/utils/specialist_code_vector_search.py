@@ -1,6 +1,6 @@
 from astrapy import DataAPIClient
 from typing import List
-from console_config import pretty_print_json, print_ruler, print_section_header
+from utils.console_config import pretty_print_json, print_ruler, print_section_header
 import os
 
 # Initialize the client
@@ -9,7 +9,7 @@ db = client.get_database_by_api_endpoint(os.getenv("ASTRA_DB_URL"))
 collection = db.get_collection("specialists_taxonomy")
 
 print_ruler()
-print_section_header(f"Connected to Astra DB: {db.list_collection_names()}", "green")
+print_section_header(f"Specialist Type from {db.list_collection_names()}", "green")
 
 def find_specialist(reason: str, result_size: int=3) -> List[str]: 
     specialists_type = list(collection.find(
@@ -20,4 +20,6 @@ def find_specialist(reason: str, result_size: int=3) -> List[str]:
     codes = [item['Code'] for item in specialists_type]
     return codes
 
-find_specialist("broken hip that needs replacement", 3)
+# dunder name check
+if __name__ == "__main__":
+    find_specialist("broken hip that needs replacement", 3)
