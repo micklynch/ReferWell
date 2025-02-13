@@ -3,9 +3,13 @@ import pandas as pd
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from utils.patient_demographics import get_patient_demographics
-
+from utils.specialist_code_vector_search import find_specialist_type
 
 def specialist_search(state: GraphState):
+    # Find the type of specialist
+    # returns an array of specialist codes ['2080P0202X', '2080P0205X', '207RC0000X']
+    find_specialist_type(state['reason'], 3)
+    
     csv_file = "specialists.csv"
     df = pd.read_csv(csv_file)
 

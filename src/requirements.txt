@@ -11,3 +11,4 @@ pandas
 geopy
 haversine
 langchain_community
+astrapy
