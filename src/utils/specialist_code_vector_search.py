@@ -14,12 +14,26 @@ print_section_header(f"Specialist Type from {db.list_collection_names()}", "gree
 def find_specialist_type(reason: str, result_size: int=3) -> List[str]:
     """
     Finds the most appropriate specialists codes based on reasons
-    Example Output: ['2080P0202X', '2080P0205X', '207RC0000X']
+    Example Output: 
+    [
+        {
+            "Code": "2080P0202X", 
+            "Display Name": "Pediatric Critical Care Medicine"
+        }, 
+        {
+            "Code": "2080P0205X", 
+            "Display Name": "Pediatric Emergency Medicine"
+        }, 
+        {
+            "Code": "207RC0000X", 
+            "Display Name": "Cardiovascular Disease"
+        }
+    ]
     """
     specialists_type = list(collection.find(
     sort={"$vectorize": reason},
     limit=result_size,
     ))
     pretty_print_json(specialists_type)
-    codes = [item['Code'] for item in specialists_type]
-    return codes
+    specialists_code_name = [{"Code": item['Code'], "Display Name": item['Display_Name']} for item in specialists_type]
+    return specialists_code_name
