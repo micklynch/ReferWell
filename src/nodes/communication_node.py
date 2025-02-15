@@ -4,7 +4,7 @@ from langchain_core.output_parsers import StrOutputParser
 from utils.console_config import pretty_print_text, print_ruler, print_section_header
 
 
-def generate_node(state):
+def generate_letter(state):
     model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
     prompt = ChatPromptTemplate.from_template(
         f"""
