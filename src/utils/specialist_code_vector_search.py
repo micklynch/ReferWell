@@ -21,5 +21,5 @@ def find_specialist_type(reason: str, result_size: int=3) -> List[str]:
     limit=result_size,
     ))
     pretty_print_json(specialists_type)
-    codes = [item['Code'] for item in specialists_type]
+    codes = [{"Code": item['Code'], "Display Name": item['Display_Name']} for item in specialists_type]
     return codes
