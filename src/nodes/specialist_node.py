@@ -5,16 +5,34 @@ from geopy.distance import geodesic
 from utils.patient_demographics import get_patient_demographics
 from utils.specialist_code_vector_search import find_specialist_type
 
-def specialist_search(state: GraphState):
+def search(state: GraphState):
     # Find the type of specialist
-    # returns an array of specialist codes ['2080P0202X', '2080P0205X', '207RC0000X']
-    find_specialist_type(state['reason'], 3)
+    # returns an array of specialist codes and display names
+    #     Example Output: 
+    # [
+    #     {
+    #         "Code": "2080P0202X", 
+    #         "Display Name": "Pediatric Critical Care Medicine"
+    #     }, 
+    #     {
+    #         "Code": "2080P0205X", 
+    #         "Display Name": "Pediatric Emergency Medicine"
+    #     }, 
+    #     {
+    #         "Code": "207RC0000X", 
+    #         "Display Name": "Cardiovascular Disease"
+    #     }
+    # ]
+    state['specialty_type'] = find_specialist_type(state['reason'], 3)
     
     csv_file = "specialists.csv"
     df = pd.read_csv(csv_file)
 
     patient_address = get_patient_demographics(state['patient_id'])['address']
-    required_specialty = state['specialty_type']
+
+    ## TODO: I'm just picking the first one of the list, but we should interupt here to ask the user to select one
+    required_specialty = state['specialty_type'][0]['Display Name']
+    print(required_specialty)
     closest_specialist = find_nearest_specialist(df, patient_address, required_specialty)
 
     return {

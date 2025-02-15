@@ -34,6 +34,7 @@ def find_specialist_type(reason: str, result_size: int=3) -> List[str]:
     sort={"$vectorize": reason},
     limit=result_size,
     ))
-    pretty_print_json(specialists_type)
     specialists_code_name = [{"Code": item['Code'], "Display Name": item['Display_Name']} for item in specialists_type]
+    pretty_print_json(specialists_code_name)
+
     return specialists_code_name
