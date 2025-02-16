@@ -12,3 +12,4 @@ geopy
 haversine
 langchain_community
 astrapy
+chainlit

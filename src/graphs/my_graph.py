@@ -1,6 +1,7 @@
 from langgraph.graph import StateGraph,START, END
 from state.graph_state import GraphState
 from nodes import communication_node, patient_node,specialist_node
+from langgraph.checkpoint.memory import MemorySaver
 
 
 def create_graph():
@@ -15,4 +16,4 @@ def create_graph():
     workflow.add_edge("analyze", "generate")
     workflow.add_edge("generate", END)
     
-    return workflow.compile()
+    return workflow.compile(checkpointer=MemorySaver())

@@ -4,6 +4,7 @@ from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from utils.patient_demographics import get_patient_demographics
 from utils.specialist_code_vector_search import find_specialist_type
+from langgraph.types import interrupt
 
 def search(state: GraphState):
     # Find the type of specialist
@@ -23,20 +24,55 @@ def search(state: GraphState):
     #         "Display Name": "Cardiovascular Disease"
     #     }
     # ]
-    state['specialty_type'] = find_specialist_type(state['reason'], 3)
+    speciality_type_list = find_specialist_type(state['reason'], 3)
     
     csv_file = "specialists.csv"
     df = pd.read_csv(csv_file)
 
     patient_address = get_patient_demographics(state['patient_id'])['address']
+    value = interrupt(
+        {
+            "specialty_type":  speciality_type_list
+        }
+    )
 
     ## TODO: I'm just picking the first one of the list, but we should interupt here to ask the user to select one
-    required_specialty = state['specialty_type'][0]['Display Name']
+    required_specialty = speciality_type_list[value-1]['Display Name']
+    state['specialty_type'] = required_specialty
     print(required_specialty)
-    closest_specialist = find_nearest_specialist(df, patient_address, required_specialty)
 
+    #closest_specialist = find_nearest_specialist(df, patient_address, required_specialty)
+    closest_specialist = [
+        {
+            'Doctor Name': 'Dr. Alice Johnson',
+            'Specialty': 'Cardiologist',
+            'Address': '1001 Madison St, Seattle, WA, 98199',
+            'Distance': 3.690930006315589
+        },
+        {
+            'Doctor Name': 'Dr. Bob Smith',
+            'Specialty': 'Neurologist',
+            'Address': '202 Pine St, Seattle, WA, 98101',
+            'Distance': 5.123456789
+        },
+        {
+            'Doctor Name': 'Dr. Carol Lee',
+            'Specialty': 'Orthopedic Surgeon',
+            'Address': '303 Oak Ave, Bellevue, WA, 98004',
+            'Distance': 7.891011121314
+        }
+    ]
+
+    print(closest_specialist)
+    value = interrupt(
+        {
+            "specialist_data": closest_specialist
+        }
+    )
+    print(state)
     return {
-        "specialist_data": closest_specialist
+        "specialist_data": closest_specialist[value-1],
+        "specialty_type": required_specialty
     }
 
 
@@ -85,4 +121,4 @@ def find_nearest_specialist(df, patient_address, required_specialty):
 
     specialists_with_distance.sort(key=lambda x: x["Distance"])
 
-    return specialists_with_distance[0] if specialists_with_distance else None
+    return specialists_with_distance if specialists_with_distance else None
