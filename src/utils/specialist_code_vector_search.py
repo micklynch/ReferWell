@@ -35,6 +35,8 @@ def find_specialist_type(reason: str, result_size: int=3) -> List[str]:
     limit=result_size,
     ))
     specialists_code_name = [{"Code": item['Code'], "Display Name": item['Display_Name']} for item in specialists_type]
+    print_section_header("Most Appropriate Specialist Type", "blue")
+    print_ruler()
     pretty_print_json(specialists_code_name)
 
     return specialists_code_name

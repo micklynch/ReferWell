@@ -5,7 +5,7 @@ from geopy.distance import geodesic
 from utils.patient_demographics import get_patient_demographics
 from utils.specialist_code_vector_search import find_specialist_type
 from langgraph.types import interrupt
-from utils.console_config import pretty_print_text
+from utils.console_config import pretty_print_json, print_ruler, print_section_header
 
 def search(state: GraphState):
     # Find the type of specialist
@@ -61,14 +61,14 @@ def search(state: GraphState):
     #         'Distance': 7.891011121314
     #     }
     # ]
-
-    print(closest_specialist)
+    
+    print_section_header("Closest Specialists", "red")
+    pretty_print_json(closest_specialist)
     value = interrupt(
         {
             "specialist_data": closest_specialist
         }
     )
-    print(state)
     return {
         "specialist_data": closest_specialist[value-1],
         "specialty_type": required_specialty
