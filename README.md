@@ -21,6 +21,11 @@ Data retrieval can be initiated by referring physician. In larger organizations 
 
 #### Market Sizing
 **In the United States:**
+From presentation:
+* There are approximately 740MM referrals in the US per year
+* The average referral takes ~27 minutes from physician and admins 
+* Assuming an average cost of $100/hr, the TAM is $74B per year
+
 - Approximately 105 million physician office visits result in referrals to specialists annually.
 - Primary care physicians spend an average of 74 minutes per day managing referrals, equivalent to about 20% of their clinical time.
 - Incomplete referrals are a major issue, with up to 68% of specialists reporting that they receive inadequate information from primary care physicians.
@@ -29,24 +34,22 @@ According to a survey by the American Medical Association, physicians spend an a
 
 With over 100 million specialist referrals annually in the US, the scale of this problem is very large. Assuming a $100-$300 per provider/month, the TAM could range from $1 billion to $5 billion annually, depending on adoption rates and service scope.
 
-*TODO*: Need to add references for these data
-
 ## Goal
 The goal of this work is to develop an Agent flow that helps physicians who have patients that requires a speciality consult. The system will help them find specialists and prepare the documentation for the referral. It will incorporate some information about specialists, data about the patient and be able to generate a referral letter.
 
 ```mermaid
-graph LR
-    Start([Start]) --> FindSpecialist[Find Specialist 
-    *GraphRAG?*]
-    FindSpecialist --> GetDataReq[Get data requirements 
-    *RAG?*]
-    GetDataReq --> GetFHIRData[Get data from FHIR 
-    *Tool?*]
-    GetFHIRData --> RequestDiagnostic[Order diagnostic
-    *Tool?*]
-    RequestDiagnostic --> WriteLetter[Write letter 
-    *Agent?*]
-    WriteLetter --> End([End])
+flowchart TD 
+	A[START] --> B[Interface: Get Patient ID and Referral Reason] 
+	B --> C[Find Patient's Name and Address] 
+	C --> D[Find appropriate Sub-speciality] 
+	D --> E[Find Closest Specialist] 
+	E --> F[Retrieve Relevant Patient Data] 
+	F --> G[Composer: Generate Letter for Specialist] 
+	G --> H[END] 
+	D -->|DataStax Taxonomy| I[(DataStax Taxonomy)] 
+	E -->|CMS List of Specialists| J[(CMS List of Specialists)] 
+	C -->|FHIR API| K[(hapi.fhir.org)]
+	F --> K
 ```
 
 #### Definition of Success
@@ -57,20 +60,17 @@ As this is a learning activity, we will be using an agent framework to create th
 
 There should be the notion that when a list of data features comes back from the FHIR database that the LLM can make the decision, whether there is enough information here to create the referral or it needs to add additional diagnostics.
 
-The state should include:
-
+The state includes:
 ```jsx
-{
-	"patient": str,
-	"referrer": str,
-	"specialty": str,
-	"specialist": 
-	{
-		"name" : str,
-		"location": str,
-		"clinic": str,
-	}
-}
+
+patient_id: str
+referrer_details: str
+specialty_type: str
+specialist_data: str
+reason: str
+clinical_data: Dict[str,Any]
+referral_letter: str
+
 ```
 
 ### Data
@@ -89,9 +89,5 @@ In the first Sprint of this course, I will be outlining the detailed requirement
 To run the code, the user must
 1. Create a virtual environment. For example, using `python3 -m venv venv`. Activate the environment using `source venv/bin/activate`.
 2. Install the dependencies using `pip install -r requirements.txt`.
-3. Make a copy of the `.env.example` file and call it `.env`. Open the file and add your `OPENAI_API_KEY` into the file.
-4. Run the code `python main.py`.
-
-
-
-
+3. Make a copy of the `.env.example` file and call it `.env`. Open the file and add your API keys into the file.
+4. Run the code `chainlit run chainlit_app.py`.
