@@ -33,8 +33,6 @@ With over 100 million specialist referrals annually in the US, the scale of this
 ## Goal
 The goal of this work is to develop an Agent flow that helps physicians who have patients that requires a speciality consult. The system will help them find specialists and prepare the documentation for the referral. It will incorporate some information about specialists, data about the patient and be able to generate a referral letter.
 
-## Steps in the Process
-Listed below are the steps that our framework should take in order to create the referral letter for the doctor.
 
 ## Solution Design
 As this is a learning activity, we will be using an agent framework to create this process flow and use a combination of vector search, tool use, human-interrupt and summarization. The flowchart below illustrates the steps in the process.
