@@ -21,10 +21,6 @@ Data retrieval can be initiated by referring physician. In larger organizations 
 
 #### Market Sizing
 **In the United States:**
-From presentation:
-* There are approximately 740MM referrals in the US per year
-* The average referral takes ~27 minutes from physician and admins 
-* Assuming an average cost of $100/hr, the TAM is $74B per year
 
 - Approximately 105 million physician office visits result in referrals to specialists annually.
 - Primary care physicians spend an average of 74 minutes per day managing referrals, equivalent to about 20% of their clinical time.
@@ -36,6 +32,12 @@ With over 100 million specialist referrals annually in the US, the scale of this
 
 ## Goal
 The goal of this work is to develop an Agent flow that helps physicians who have patients that requires a speciality consult. The system will help them find specialists and prepare the documentation for the referral. It will incorporate some information about specialists, data about the patient and be able to generate a referral letter.
+
+## Steps in the Process
+Listed below are the steps that our framework should take in order to create the referral letter for the doctor.
+
+## Solution Design
+As this is a learning activity, we will be using an agent framework to create this process flow and use a combination of vector search, tool use, human-interrupt and summarization. The flowchart below illustrates the steps in the process.
 
 ```mermaid
 flowchart TD 
@@ -51,12 +53,7 @@ flowchart TD
 	C -->|FHIR API| K[(hapi.fhir.org)]
 	F --> K
 ```
-
-#### Definition of Success
-
-
-## Solution Design
-As this is a learning activity, we will be using an agent framework to create this process flow and use a combination of RAG, tool use, and summarization. 
+The user is also asked to confirm the sub-speciality choice and to select the specialist.
 
 There should be the notion that when a list of data features comes back from the FHIR database that the LLM can make the decision, whether there is enough information here to create the referral or it needs to add additional diagnostics.
 
@@ -76,11 +73,6 @@ referral_letter: str
 ### Data
 
 Here are the [Pydantic](https://docs.pydantic.dev/latest/) models for the data that will be used....
-
-## Steps in the Process
-Listed below are the steps that our framework should take in order to create the referral letter for the doctor.
-
-*TBD*
 
 ## Plan
 In the first Sprint of this course, I will be outlining the detailed requirements and solution design. Will be leveraging resources that currently exist as much as possible (e.g https://hapi.fhir.org for test data). 
