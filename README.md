@@ -1,6 +1,7 @@
 ## Background
 Doctors routinely refer patients to specialists. In order to make the referral, the doctor needs to collect relevant information from the patient's health record. It further diagnostics are needed, then an order needs to be placed. This work currently involves a lot of manual chart review and data collection. Our goal for this project is to reduce the manual work involved in creating a referral letter. 
 
+[![Watch the video](https://img.youtube.com/vi/f30TH-g13vs/0.jpg)](https://www.youtube.com/watch?v=f30TH-g13vs)
 #### Current state
 
 The main tasks of the referring physician is to;
